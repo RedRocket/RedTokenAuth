@@ -9,9 +9,8 @@ Gem::Specification.new do |s|
   s.version     = RedTokenAuth::VERSION
   s.authors     = ["Caio Ergos"]
   s.email       = ["caioergos@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of RedTokenAuth."
-  s.description = "TODO: Description of RedTokenAuth."
+  s.summary     = "Simple token based authentication interface."
+  s.description = "This does not aim to compete with Devise. It is intended to supply a simple interface for database agnostic authentication."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

@@ -6,12 +6,15 @@ source 'https://rubygems.org'
 gemspec
 
 gem 'mongoid', '~> 6.1.0'
+gem 'bcrypt', '~> 3.1.7'
 
 group :test, :development do
   gem "rspec-rails", "~> 3.5"
-  gem "mocha"
+  gem 'factory_girl'
 end
 
 group :test do
-  gem "shoulda-matchers", '~> 3.1'
+  gem 'mongoid-rspec'
+  gem 'mocha'
+  gem 'database_cleaner'
 end

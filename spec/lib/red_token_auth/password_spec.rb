@@ -1,7 +1,15 @@
 require "rails_helper"
 
 RSpec.describe RedTokenAuth::SignInOut do
-  it "should add #password to class"
-  it "should add #password_confirmation to class"
-  it "should validate #password confirmation"
+  describe "#password" do
+    it "should be added to the class" do
+      expect(User.new).to respond_to(:password)
+    end
+  end
+
+  describe "#password_confirmation" do
+    it "should be added to the class" do
+      expect(User.new).to respond_to(:password_confirmation)
+    end
+  end
 end

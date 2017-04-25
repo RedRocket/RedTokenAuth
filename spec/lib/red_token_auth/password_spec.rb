@@ -90,4 +90,62 @@ RSpec.describe RedTokenAuth::Password do
       end
     end
   end
+
+  describe "#reset_password" do
+    before :each do
+      @user.generate_reset_password_token
+    end
+
+    context "when the right token is used" do
+      let(:reset_password) do
+        @user.reset_password(reset_password_token: @user.reset_password_token,
+                             password: "987654321",
+                             password_confirmation: "987654321")
+      end
+
+      it "should change the entity's password" do
+        expect { reset_password }.to change { @user.password_digest }
+      end
+    end
+
+    context "when the wrong token is used" do
+      let(:reset_password) do
+        @user.reset_password(reset_password_token: "wrong_token",
+                             password: "987654321",
+                             password_confirmation: "987654321")
+      end
+
+      it "should not change the entity's password" do
+        expect { reset_password }.not_to change { @user.password_digest }
+      end
+
+      it "should not update the user password" do
+        expect { reset_password }.not_to change { @user.password_digest }
+      end
+
+      it "should add errors to the entity instance" do
+        expect { reset_password }.to change { @user.errors[:current_password] }
+      end
+    end
+
+    context "when no token is used" do
+      let(:reset_password) do
+        @user.reset_password(reset_password_token: "",
+                             password: "987654321",
+                             password_confirmation: "987654321")
+      end
+
+      it "should not change the entity's password" do
+        expect { reset_password }.not_to change { @user.password_digest }
+      end
+
+      it "should not update the user password" do
+        expect { reset_password }.not_to change { @user.password_digest }
+      end
+
+      it "should add errors to the entity instance" do
+        expect { reset_password }.to change { @user.errors[:current_password] }
+      end
+    end
+  end
 end

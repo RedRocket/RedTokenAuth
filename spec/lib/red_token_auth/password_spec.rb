@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe RedTokenAuth::Password do
   before :each do
-    @user = create(:user)
+    @user = create(:user, password: "123456789", password_confirmation: "123456789")
   end
 
   describe "#password" do
@@ -44,6 +44,50 @@ RSpec.describe RedTokenAuth::Password do
 
     it "should update #reset_password_token_sent_at" do
       expect { @user.generate_reset_password_token }.to change { @user.reset_password_token_sent_at }
+    end
+  end
+
+  describe "#update_password" do
+    context "when the right current_password is used" do
+      it "should update the user password" do
+        expect do
+          @user.update_password(current_password: "123456789",
+                                password: "987654321",
+                                password_confirmation: "987654321")
+        end.to change { @user.password_digest }
+      end
+    end
+
+    context "when the wrong current_password is used" do
+      let(:update_wrong_password) do
+        @user.update_password(current_password: "wring_password",
+                              password: "987654321",
+                              password_confirmation: "987654321")
+      end
+
+      it "should not update the user password" do
+        expect { update_wrong_password }.not_to change { @user.password_digest }
+      end
+
+      it "should add errors to the entity instance" do
+        expect { update_wrong_password }.to change { @user.errors[:current_password] }
+      end
+    end
+
+    context "when the no current_password is used" do
+      let(:update_wrong_password) do
+        @user.update_password(current_password: "",
+                              password: "987654321",
+                              password_confirmation: "987654321")
+      end
+
+      it "should not update the user password" do
+        expect { update_wrong_password }.not_to change { @user.password_digest }
+      end
+
+      it "should add errors to the entity instance" do
+        expect { update_wrong_password }.to change { @user.errors[:current_password] }
+      end
     end
   end
 end

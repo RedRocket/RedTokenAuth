@@ -72,7 +72,7 @@ end
 
   This method is used after the `User#generate_password_token` and the `User#reset_password_token` now stores a token.
   ```ruby
-  user.update_password(reset_password_token: "token", password: "new_password", password_confirmation: "new_password")
+  user.reset_password(reset_password_token: "token", password: "new_password", password_confirmation: "new_password")
   ```
   
 

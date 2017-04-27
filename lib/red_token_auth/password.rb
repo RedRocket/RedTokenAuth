@@ -15,6 +15,10 @@ module RedTokenAuth
       # The model must have a field named #password_digest.
       has_secure_password
 
+      validates :password,
+        format: RedTokenAuth.configuration.password_regex,
+        length: { in: RedTokenAuth.configuration.password_length }
+
       def generate_reset_password_token
         update(reset_password_token: random_token, reset_password_token_sent_at: Time.zone.now)
       end

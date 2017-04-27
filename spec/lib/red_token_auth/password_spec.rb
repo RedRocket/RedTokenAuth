@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe RedTokenAuth::Password do
   before :each do
-    @user = create(:user, password: "123456789", password_confirmation: "123456789")
+    @user = create(:user, password: "abcd1234", password_confirmation: "abcd1234")
   end
 
   describe "#password" do
@@ -51,7 +51,7 @@ RSpec.describe RedTokenAuth::Password do
     context "when the right current_password is used" do
       it "should update the user password" do
         expect do
-          @user.update_password(current_password: "123456789",
+          @user.update_password(current_password: "abcd1234",
                                 password: "987654321",
                                 password_confirmation: "987654321")
         end.to change { @user.password_digest }

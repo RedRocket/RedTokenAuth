@@ -6,4 +6,20 @@ RSpec.describe RedTokenAuth::Configuration do
     expect(RedTokenAuth.configuration.password_regex).not_to be_nil
     expect(RedTokenAuth.configuration.password_length).not_to be_nil
   end
+
+  context "configuration file" do
+    before :each do
+      RedTokenAuth.configure do |config|
+        config.email_regex = /.@./
+        config.password_regex = /([A-Z])\w+/
+        config.password_length = 6..10
+      end
+    end
+
+    it "should assign configurations" do
+      expect(RedTokenAuth.configuration.email_regex).to eq(/.@./)
+      expect(RedTokenAuth.configuration.password_regex).to eq(/([A-Z])\w+/)
+      expect(RedTokenAuth.configuration.password_length).to eq(6..10)
+    end
+  end
 end

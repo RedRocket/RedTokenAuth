@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe RedTokenAuth::SignInOut do
   describe "#sign_in" do
     before :each do
-      @user = create(:user, password: "123456789", password_confirmation: "123456789")
+      @user = create(:user, password: "abcd1234", password_confirmation: "abcd1234")
     end
 
     it "should be added to the model" do
@@ -12,7 +12,7 @@ RSpec.describe RedTokenAuth::SignInOut do
 
     context "when password matches" do
       before :each do
-        @user.sign_in("123456789")
+        @user.sign_in("abcd1234")
       end
 
       it "should create a new token for the user" do

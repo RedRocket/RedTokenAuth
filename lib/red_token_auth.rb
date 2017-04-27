@@ -18,11 +18,7 @@ module RedTokenAuth
     include Password
   end
 
-  def self.configuration
-    @configuration ||= Configuration.new
-  end
-
-  def self.configure
-    yield(configuration)
+  def self.configure(&block)
+    Configuration.configure(&block)
   end
 end

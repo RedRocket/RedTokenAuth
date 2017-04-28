@@ -1,14 +1,22 @@
 require_relative 'boot'
 
 # Pick the frameworks you want:
-require "active_record/railtie"
-require "action_controller/railtie"
-require "action_view/railtie"
-require "action_mailer/railtie"
-require "active_job/railtie"
-require "action_cable/engine"
-# require "rails/test_unit/railtie"
-require "sprockets/railtie"
+require "rails"
+
+%w(
+  action_controller/railtie
+  action_view/railtie
+  action_mailer/railtie
+  active_job/railtie
+  action_cable/engine
+  rails/test_unit/railtie
+  sprockets/railtie
+).each do |railtie|
+  begin
+    require railtie
+  rescue LoadError
+  end
+end
 
 Bundler.require(*Rails.groups)
 require "red_token_auth"

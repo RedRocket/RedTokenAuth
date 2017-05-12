@@ -6,14 +6,13 @@ module RedTokenAuth
 
     included do
       include ActiveModel::SecurePassword
+      # Adds #password_confirmation and #authenticate.
+      # The model must have a field named #password_digest.
+      has_secure_password validations: false
 
       # Attribute for updating password.
       # Entity must pass current password in order to change its password.
       attr_accessor :current_password
-
-      # Adds #password_confirmation and #authenticate.
-      # The model must have a field named #password_digest.
-      has_secure_password
 
       def generate_reset_password_token
         update(reset_password_token: random_token, reset_password_token_sent_at: Time.zone.now)
@@ -40,10 +39,11 @@ module RedTokenAuth
           return false
         end
       end
+
+      def random_token
+        SecureRandom.hex(3)
+      end
     end
 
-    def random_token
-      SecureRandom.hex(3)
-    end
   end
 end

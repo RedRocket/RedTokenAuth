@@ -11,7 +11,9 @@ module RedTokenAuth
         format: RedTokenAuth.configuration.email_regex
       validates :password,
         format: RedTokenAuth.configuration.password_regex,
-        length: { in: RedTokenAuth.configuration.password_length }
+        length: { in: RedTokenAuth.configuration.password_length },
+        confirmation: true,
+        if: Proc.new { |entity| entity.password.present? }
     end
   end
 end

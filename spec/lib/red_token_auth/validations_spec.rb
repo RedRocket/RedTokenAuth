@@ -16,6 +16,12 @@ RSpec.describe RedTokenAuth::Configuration do
     expect { invalid_user.save }.to change { invalid_user.errors[:password] }
   end
 
+  it "should validate #password only if #password.present?" do
+    user = build :user, password: ""
+    puts user.errors.full_messages.join ","
+    expect(user.valid?).to eq(true)
+  end
+
   it "should add a readable error message to email field"
   it "should add a readable error message to password field"
 end

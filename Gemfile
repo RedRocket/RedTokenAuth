@@ -11,6 +11,11 @@ gem 'bcrypt', '~> 3.1.7'
 group :test, :development do
   gem "rspec-rails", "~> 3.5"
   gem 'factory_girl'
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-rails'
+  gem 'pry-stack_explorer'
+  gem 'pry-byebug'
 end
 
 group :test do

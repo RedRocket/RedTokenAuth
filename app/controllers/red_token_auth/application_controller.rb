@@ -1,5 +1,5 @@
 module RedTokenAuth
-  class ApplicationController < ActionController::Base
-    protect_from_forgery with: :exception
+  class AuthenticationController < ActionController::Base
+    
   end
 end

@@ -22,9 +22,10 @@ module RedTokenAuth
         end
       end
     end
+
+    def random_token
+      SecureRandom.hex(30)
+    end
   end
 
-  def random_token
-    SecureRandom.hex(30)
-  end
 end

@@ -29,13 +29,48 @@ $ gem install red_token_auth
 
 ```
 ## Usage
-You'll be able to include the module in the model like so:
+You'll be able to include the module in the model like so.
+
+(Pay attention to the fields, because **ALL** of them are **REQUIRED** for the proper use of this gem.
 ```ruby
 class User
   include Mongoid::Document
   include RedTokenAuth
+  
+  # Mandatory fields for this gem.
+  field :email,                        type: String
+  field :password_digest,              type: String
+  field :reset_password_token,         type: String
+  field :reset_password_token_sent_at, type: Time
+  field :authentication_token,         type: String
 end
 ```
+
+And you must include other module in your controller:
+```ruby
+class ApplicationController < ActionController::API
+  include RedTokenAuth::Controllers::Authentication
+end
+```
+
+Authenticating the user:
+```ruby
+class UsersController < ApplicationController
+  before_action only: [:update] { authenticate! :admin }
+  before_action only: [:show]   { authenticate! :user }
+  
+  def update
+    @admin = current_admin
+    # Code ...
+  end
+  
+  def show
+    @user = current_user
+  end
+end
+```
+By using the `authenticate!(:user)` in your controller, you'll have access to `current_user`.
+
 ### Included methods
 * `User#sign_in`
 
@@ -84,9 +119,7 @@ RedTokenAuth.configure do |config|
 end
 ```
 
-## Contributing
-To do.
-
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+
 

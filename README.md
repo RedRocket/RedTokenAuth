@@ -74,7 +74,7 @@ By using the `authenticate!(:user)` in your controller, you'll have access to `c
 ### Included methods
 * `User#sign_in`
 
-  It'll return `true` if `"password"` matches the user password and an `authentication_token` will be generated for the user. If it doesn't match, errors will be added to `User#errors` and `false` will be returned.
+  It'll return `User#create_new_authentication_token` if `"password"` matches the user password and an `authentication_token` will be generated for the user. If it doesn't match, errors will be added to `User#errors` and `false` will be returned.
 
   ```ruby
   user.sign_in("password")
@@ -110,6 +110,17 @@ By using the `authenticate!(:user)` in your controller, you'll have access to `c
   user.reset_password(reset_password_token: "token", password: "new_password", password_confirmation: "new_password")
   ```
 
+* `User#create_new_authentication_token`
+
+  This method will create new authentication token for the user and will return a hash that can be appended to the headers.
+  ```ruby
+    user.create_new_authentication_token
+    #=> {"access-token" => "==wei2989896756-_", "uid" => "email@email.com", "token-type" => "Bearer"}
+
+    # In controller scope:
+    request.headers.merge!(user.create_new_authentication_token)
+  ```
+
 ### Configuring
 ```ruby
 RedTokenAuth.configure do |config|
@@ -121,3 +132,4 @@ end
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+

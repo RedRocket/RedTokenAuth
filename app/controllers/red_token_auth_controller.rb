@@ -1,3 +1,0 @@
-class RedTokenAuthController < ApplicationController
-  
-end

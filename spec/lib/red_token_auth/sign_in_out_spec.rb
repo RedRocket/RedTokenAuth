@@ -36,34 +36,18 @@ RSpec.describe RedTokenAuth::SignInOut do
   end
 
   describe "#sign_out" do
+    before :each do
+      @user = create(:user, authentication_token: "AToken")
+      @user.sign_out
+    end
+    
     it "should be added to the model" do
       expect(User.new).to respond_to(:sign_out)
     end
 
-    context "when the right token is used" do
-      before :each do
-        @user = create(:user, authentication_token: "AToken")
-        @user.sign_out(@user.authentication_token)
-      end
-
-      it "should delete the current token" do
-        expect(@user.authentication_token).to be_nil
-      end
-    end
-
-    context "when the wrong token is used" do
-      before :each do
-        @user = create(:user, authentication_token: "AToken")
-        @user.sign_out("WR0ngT0k3n")
-      end
-
-      it "should not delete the current token" do
-        expect(@user.authentication_token).not_to be_nil
-      end
-
-      it "should add errors to the authentication_token field" do
-        expect(@user.errors[:authentication_token]).not_to be_empty
-      end
+    it "should delete the current token" do
+      expect(@user.authentication_token).to be_nil
     end
   end
+
 end

@@ -1,36 +1,41 @@
-module Controllers
-  module Authentication
-    extend ActiveSupport::Concern
+module RedTokenAuth
+  module Controllers
+    module Authentication
+      extend ActiveSupport::Concern
 
-    class_methods do
-      # class UserController < ApplicationController
-      #   before_action only: [:index] { authenticate :user }
-      # end
-      def authenticate(resource, options = {})
-        klass = resource.to_s.capitalize.constatize
 
-        auth_key   = options[:auth_key]   || :email
-        auth_param = options[:auth_param] || :email
+      included do
+        # class UserController < ApplicationController
+        #   before_action only: [:index] { authenticate! :user }
+        # end
+        def authenticate!(resource, options = {})
+          klass = resource.to_s.capitalize.constantize
 
-        resource = klass.find_by(auth_key: headers[:"#{auth_param}"])
+          #TODO: make this query configurable.
+          @resource = klass.where(email: request.headers["uid"]).first
 
-        unless entity.authenticate_token(headers[:"#{klass.to_s.downcase}-#{auth_param}"])
-          render_unauthorized
+          unless @resource && @resource.authenticate_token(request.headers["access-token"])
+            render_unauthorized
+          end
+
+          define_methods(klass)
+        end
+
+        def resource_name(klass)
+          klass.to_s.downcase.to_sym
+        end
+
+        def render_unauthorized
+          render json: I18n.t("red_token_auth.messages.unauthorized"), status: :unauthorized
         end
       end
-    end
 
-    included do
-      def resource_name(klass)
-        klass.to_s.downcase.to_sym
-      end
-    end
+      private
 
-    private
-
-    def generate_methods
-      define_method(:"current_#{resource_name(klass)}") do
-        resource
+      def define_methods(klass)
+        define_singleton_method(:"current_#{resource_name(klass)}") do
+          @resource
+        end
       end
     end
   end

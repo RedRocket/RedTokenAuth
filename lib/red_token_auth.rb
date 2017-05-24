@@ -8,6 +8,8 @@ require "red_token_auth/sign_in_out"
 require "red_token_auth/password"
 require "red_token_auth/validations"
 
+require "red_token_auth/controllers/authentication"
+
 module RedTokenAuth
   extend ActiveSupport::Concern
 

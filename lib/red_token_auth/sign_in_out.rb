@@ -10,6 +10,7 @@ module RedTokenAuth
           create_new_authentication_token
         else
           errors.add(:password, :wrong_password)
+          false
         end
       end
 

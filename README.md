@@ -36,7 +36,7 @@ You'll be able to include the module in the model like so.
 class User
   include Mongoid::Document
   include RedTokenAuth
-  
+
   # Mandatory fields for this gem.
   field :email,                        type: String
   field :password_digest,              type: String
@@ -58,12 +58,12 @@ Authenticating the user:
 class UsersController < ApplicationController
   before_action only: [:update] { authenticate! :admin }
   before_action only: [:show]   { authenticate! :user }
-  
+
   def update
     @admin = current_admin
     # Code ...
   end
-  
+
   def show
     @user = current_user
   end
@@ -82,10 +82,10 @@ By using the `authenticate!(:user)` in your controller, you'll have access to `c
 
 * `User#sign_out`
 
-  If the token matches the user `authentication_token`, it'll be set to `nil` and return `true`. If it doesn't match, errors will be added to `User#errors` and false will be returned.
+  The user's `authentication_token` will be set to `nil`. Returns `true` if the update is successful and `false` Otherwise.
 
   ```ruby
-  user.sign_out("auth_token")
+  user.sign_out
   ```
 
 * `User#generate_password_token`
@@ -121,5 +121,3 @@ end
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
-

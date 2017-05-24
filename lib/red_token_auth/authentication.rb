@@ -4,7 +4,22 @@ module RedTokenAuth
 
     included do
       def authenticate_token(token)
-        token == authentication_token
+        BCrypt::Password.new(authentication_token) == token
+      end
+
+      def create_new_authentication_token
+        token        = SecureRandom.urlsafe_base64(nil, true)
+        token_hash   = BCrypt::Password.create(token)
+
+        self.authentication_token = token_hash
+
+        save!
+
+        {
+          "access-token" => token,
+          "uid"          => email,
+          "token-type"   => "Bearer"
+        }
       end
     end
   end

@@ -7,24 +7,20 @@ module RedTokenAuth
     included do
       def sign_in(password)
         if authenticate(password)
-          update(authentication_token: random_token)
+          create_new_authentication_token
         else
           errors.add(:password, :wrong_password)
+          false
         end
       end
 
-      def sign_out(auth_token)
-        if auth_token == authentication_token
-          update(authentication_token: nil)
-        else
-          errors.add(:authentication_token, :wrong_token)
-          false
-        end
+      def sign_out
+        update(authentication_token: nil)
       end
     end
 
     def random_token
-      SecureRandom.hex(30)
+      SecureRandom.hex
     end
   end
 

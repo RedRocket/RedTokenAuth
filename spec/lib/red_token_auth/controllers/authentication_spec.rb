@@ -10,13 +10,11 @@ RSpec.describe UsersController, type: :controller do
   describe "#authenticate!" do
     before :each do
       user.save
-      sign_in
     end
 
     context "success" do
       it "should authenticate" do
-        request.headers["uid"] = user.email
-        request.headers["access-token"] = user.authentication_token
+        request.headers.merge!(user.sign_in("abcd1234"))
 
         # This route needs authentication.
         get :show, params: { id: user.id }
@@ -27,7 +25,7 @@ RSpec.describe UsersController, type: :controller do
 
     context "failure" do
       it "should render unauthorized" do
-        request.headers["uid"] = user.email
+        request.headers.merge!(user.sign_in("abcd1234"))
         request.headers["access-token"] = "wrong_token"
 
         # This route needs authentication.

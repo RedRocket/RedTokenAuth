@@ -40,7 +40,7 @@ RSpec.describe RedTokenAuth::SignInOut do
       @user = create(:user, authentication_token: "AToken")
       @user.sign_out
     end
-    
+
     it "should be added to the model" do
       expect(User.new).to respond_to(:sign_out)
     end

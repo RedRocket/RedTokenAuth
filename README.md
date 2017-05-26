@@ -36,6 +36,8 @@ You'll be able to include the module in the model like so.
 class User
   include Mongoid::Document
   include RedTokenAuth
+  # Include this if you intend to use OmniAuth
+  include RedTokenAuth::Omniauthable
 
   # Mandatory fields for this gem.
   field :email,                        type: String
@@ -129,7 +131,6 @@ By using the `authenticate!(:user)` in your controller, you'll have access to `c
 ```ruby
 RedTokenAuth.configure do |config|
   config.email_regex = /\A[^@\s]+@[^@\s]+\z/
-  config.password_regex = /\A(?=.*?[a-z])(?=.*?[0-9]).{0,}\z/
   config.password_length = 8..20
 end
 ```

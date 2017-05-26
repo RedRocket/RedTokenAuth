@@ -22,14 +22,6 @@ RSpec.describe RedTokenAuth::Configuration do
     expect(user.valid?).to eq(true)
   end
 
-  it "should not validate the users email format if the provider isn't email" do
-    valid_user.provider = "not_email"
-    valid_user.email    = ""
-    valid_user.uid      = "unique_id"
-
-    expect(valid_user.valid?).to eq(true)
-  end
-
   it "should add a readable error message to email field"
   it "should add a readable error message to password field"
 end

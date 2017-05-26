@@ -5,8 +5,10 @@ require "red_token_auth/configuration"
 
 require "red_token_auth/authentication"
 require "red_token_auth/sign_in_out"
+require "red_token_auth/omniauthable"
 require "red_token_auth/password"
 require "red_token_auth/validations"
+
 
 require "red_token_auth/controllers/authentication"
 

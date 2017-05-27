@@ -12,11 +12,17 @@ RSpec.describe RedTokenAuth::Omniauthable::CallbacksAndValidations do
       .to("another_email@email.com")
   end
 
-  it "should not update if emails is already taken" do
-    @user = build(:omniauth_user, email: "valid@email.com", password: "abcd1234", password_confirmation: "abcd1234")
-    @another_user = build(:omniauth_user, email: "valid.2@email.com", password: "abcd1234", password_confirmation: "abcd1234")
-    @user.save
-    @another_user.save
+  it "should not create if email is already taken" do
+    @user         = create(:omniauth_user, email: "valid@email.com", password: "abcd1234", password_confirmation: "abcd1234")
+    @another_user = build(:omniauth_user, email: "valid@email.com", password: "abcd1234", password_confirmation: "abcd1234")
+
+    expect { @another_user.save }
+      .to change { @another_user.errors[:email] }
+  end
+
+  it "should not update if email is already taken" do
+    @user         = create(:omniauth_user, email: "valid@email.com", password: "abcd1234", password_confirmation: "abcd1234")
+    @another_user = create(:omniauth_user, email: "valid.2@email.com", password: "abcd1234", password_confirmation: "abcd1234")
 
     expect { @another_user.update(email: @user.email) }
       .to change { @another_user.errors[:email] }

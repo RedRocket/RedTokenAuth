@@ -4,10 +4,4 @@ FactoryGirl.define do
     password              "abcd1234"
     password_confirmation "abcd1234"
   end
-
-  factory :omniauth_user do
-    sequence(:email)      { |i| "email_#{i}@email.com" }
-    password              "abcd1234"
-    password_confirmation "abcd1234"
-  end
 end

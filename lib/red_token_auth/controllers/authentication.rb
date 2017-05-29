@@ -12,7 +12,7 @@ module RedTokenAuth
           klass = resource.to_s.capitalize.constantize
 
           #TODO: make this query configurable.
-          @resource = klass.where(email: request.headers["uid"]).first
+          @resource = klass.where(uid: request.headers["uid"]).first
 
           unless @resource && @resource.authenticate_token(request.headers["access-token"])
             render_unauthorized

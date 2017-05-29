@@ -24,6 +24,7 @@ module RedTokenAuth
     include SignInOut
     include Password
     include Validations
+    include Omniauthable
   end
 
   def self.configuration

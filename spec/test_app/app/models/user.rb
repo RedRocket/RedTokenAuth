@@ -8,4 +8,6 @@ class User
   field :reset_password_token,         type: String
   field :reset_password_token_sent_at, type: Time
   field :authentication_token,         type: String
+  field :uid,                          type: String
+  field :provider,                     type: String, default: "email"
 end
